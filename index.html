@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Census 2027 — Online Self-Enumeration Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --saffron: #FF6B00;
+    --saffron-light: #FF9940;
+    --saffron-pale: #FFF3E8;
+    --navy: #0D2B55;
+    --navy-mid: #1A4080;
+    --green: #138808;
+    --green-light: #E8F5E9;
+    --white: #FFFFFF;
+    --off-white: #FAF8F5;
+    --text: #1C1C1C;
+    --text-muted: #5A5A6A;
+    --border: #E8E2D9;
+    --shadow: 0 8px 40px rgba(13,43,85,0.10);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--off-white);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    background: var(--navy);
+    background-image:
+      radial-gradient(ellipse at 10% 50%, rgba(255,107,0,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse at 90% 20%, rgba(19,136,8,0.12) 0%, transparent 50%);
+    padding: 80px 20px 90px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.025'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,107,0,0.2);
+    border: 1px solid rgba(255,107,0,0.5);
+    color: var(--saffron-light);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 100px;
+    margin-bottom: 24px;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.15;
+    max-width: 780px;
+    margin: 0 auto 20px;
+  }
+
+  .hero h1 span { color: var(--saffron-light); }
+
+  .hero p {
+    color: rgba(255,255,255,0.72);
+    font-size: 1.1rem;
+    max-width: 580px;
+    margin: 0 auto 36px;
+    font-weight: 300;
+  }
+
+  .tricolor-bar {
+    display: flex;
+    height: 5px;
+    width: 160px;
+    margin: 0 auto 40px;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .tricolor-bar div:nth-child(1) { flex: 1; background: var(--saffron); }
+  .tricolor-bar div:nth-child(2) { flex: 1; background: #FFFFFF; }
+  .tricolor-bar div:nth-child(3) { flex: 1; background: var(--green); }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--saffron);
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 15px 34px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+    box-shadow: 0 4px 20px rgba(255,107,0,0.4);
+  }
+  .hero-cta:hover {
+    background: var(--saffron-light);
+    transform: translateY(-2px);
+  }
+  .hero-cta svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+  /* ─── STATS BAND ─── */
+  .stats-band {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0;
+  }
+
+  .stat-item {
+    text-align: center;
+    padding: 24px 40px;
+    border-right: 1px solid var(--border);
+    flex: 1;
+    min-width: 160px;
+  }
+  .stat-item:last-child { border-right: none; }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  /* ─── SECTION WRAPPER ─── */
+  .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+
+  section { padding: 72px 0; }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 52px;
+  }
+  .section-eyebrow {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--saffron);
+    margin-bottom: 10px;
+  }
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.2;
+  }
+
+  /* ─── ABOUT CARDS ─── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+
+  .about-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s;
+  }
+  .about-card:hover { transform: translateY(-4px); }
+
+  .about-icon {
+    width: 48px; height: 48px;
+    background: var(--saffron-pale);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px;
+    font-size: 22px;
+  }
+  .about-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+  .about-card p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+
+  /* ─── PHASES ─── */
+  .phases-bg { background: var(--navy); }
+  .phases-bg .section-header h2 { color: var(--white); }
+  .phases-bg .section-eyebrow { color: var(--saffron-light); }
+
+  .phases-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media(max-width: 600px) { .phases-grid { grid-template-columns: 1fr; } }
+
+  .phase-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .phase-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+  }
+  .phase-card.phase1::before { background: var(--saffron); }
+  .phase-card.phase2::before { background: var(--green); }
+
+  .phase-num {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 6px;
+  }
+  .phase-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+  .phase-card p {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.65;
+  }
+  .phase-date {
+    display: inline-block;
+    margin-top: 16px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.7);
+  }
+
+  /* ─── STEPS ─── */
+  .steps-section { background: var(--off-white); }
+
+  .steps-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+  }
+
+  .steps-list::before {
+    content: '';
+    position: absolute;
+    left: 28px;
+    top: 48px;
+    bottom: 48px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--saffron), var(--navy));
+  }
+
+  .step {
+    display: flex;
+    gap: 28px;
+    align-items: flex-start;
+    padding: 28px 0;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .step-bubble {
+    width: 56px; height: 56px;
+    min-width: 56px;
+    background: var(--navy);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--white);
+    border: 3px solid var(--off-white);
+    box-shadow: 0 0 0 2px var(--navy);
+    position: relative;
+    z-index: 1;
+    transition: background 0.2s;
+  }
+  .step:hover .step-bubble { background: var(--saffron); }
+
+  .step-body {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 28px;
+    flex: 1;
+    box-shadow: 0 2px 16px rgba(13,43,85,0.05);
+    transition: box-shadow 0.2s;
+  }
+  .step:hover .step-body { box-shadow: 0 6px 30px rgba(13,43,85,0.12); }
+
+  .step-body h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+  .step-body p {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+  .step-tip {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: var(--saffron-pale);
+    border-left: 3px solid var(--saffron);
+    border-radius: 0 8px 8px 0;
+    font-size: 0.83rem;
+    color: #7A3B00;
+  }
+  .step-tip::before { content: '💡'; flex-shrink: 0; }
+
+  /* ─── INFO SECTION ─── */
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media(max-width: 600px) { .info-grid { grid-template-columns: 1fr; } }
+
+  .info-box {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    box-shadow: var(--shadow);
+  }
+  .info-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .info-box ul {
+    list-style: none;
+    padding: 0;
+  }
+  .info-box ul li {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .info-box ul li:last-child { border-bottom: none; }
+  .info-box ul li::before {
+    content: '✓';
+    color: var(--green);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* ─── CTA SECTION ─── */
+  .cta-section {
+    background: linear-gradient(135deg, var(--saffron) 0%, #D95C00 100%);
+    padding: 72px 20px;
+    text-align: center;
+  }
+  .cta-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 900;
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+  .cta-section p {
+    color: rgba(255,255,255,0.85);
+    font-size: 1.05rem;
+    margin-bottom: 36px;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--white);
+    color: var(--saffron);
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 16px 36px;
+    border-radius: 8px;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    transition: transform 0.2s;
+  }
+  .btn-primary:hover { transform: translateY(-3px); }
+
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: transparent;
+    color: var(--white);
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 16px 36px;
+    border-radius: 8px;
+    border: 2px solid rgba(255,255,255,0.6);
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 32px 20px;
+    font-size: 0.83rem;
+  }
+  footer a { color: var(--saffron-light); text-decoration: none; }
+
+  /* ─── RESPONSIVE ─── */
+  @media(max-width: 700px) {
+    .stat-item { padding: 16px 20px; }
+    .steps-list::before { left: 24px; }
+    .step-bubble { width: 48px; height: 48px; min-width: 48px; font-size: 1rem; }
+  }
+
+  /* ─── SCROLL ANIMATIONS ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-badge">🇮🇳 India Census 2027</div>
+  <h1>Fill Your Census Form <span>Online</span> — Step by Step</h1>
+  <div class="tricolor-bar"><div></div><div></div><div></div></div>
+  <p>India's first fully digital census. Self-enumerate from home in under 15 minutes. No documents required.</p>
+  <a href="https://se.census.gov.in/" target="_blank" rel="noopener" class="hero-cta">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+    Go to Official SE Portal
+  </a>
+</header>
+
+<!-- STATS BAND -->
+<div class="stats-band">
+  <div class="stat-item">
+    <div class="stat-num">16th</div>
+    <div class="stat-label">Census of India</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">16</div>
+    <div class="stat-label">Languages Available</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">15 min</div>
+    <div class="stat-label">To Complete SE</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">2</div>
+    <div class="stat-label">Phases</div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section>
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-eyebrow">What is it?</span>
+      <h2>India's First Digital Census</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-card reveal">
+        <div class="about-icon">🏠</div>
+        <h3>Self-Enumeration (SE)</h3>
+        <p>For the first time, citizens can submit their own household data online — before an enumerator visits. You fill the form, get an SE ID, and share it with the official.</p>
+      </div>
+      <div class="about-card reveal">
+        <div class="about-icon">📱</div>
+        <h3>Fully Digital Process</h3>
+        <p>Census 2027 is conducted digitally. Enumerators use mobile apps, and citizens can self-enumerate through the official web portal at se.census.gov.in.</p>
+      </div>
+      <div class="about-card reveal">
+        <div class="about-icon">🌐</div>
+        <h3>16 Indian Languages</h3>
+        <p>The self-enumeration portal is available in 16 languages including Hindi, English, Tamil, Telugu, Bengali, Marathi, Gujarati, Kannada, and more.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHASES -->
+<section class="phases-bg">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-eyebrow">Two Phases</span>
+      <h2>How Census 2027 Works</h2>
+    </div>
+    <div class="phases-grid">
+      <div class="phase-card phase1 reveal">
+        <div class="phase-num">Phase I</div>
+        <h3>House Listing & Housing Census (HLO)</h3>
+        <p>Captures information about your home's construction, available amenities, and household assets. Includes a 15-day Self-Enumeration window before the 30-day house listing period.</p>
+        <span class="phase-date">📅 April – September 2026 (varies by state)</span>
+      </div>
+      <div class="phase-card phase2 reveal">
+        <div class="phase-num">Phase II</div>
+        <h3>Population Enumeration</h3>
+        <p>Captures individual-level data for every person in the household. Includes caste enumeration — a first since 1931. The reference date is 00:00 hrs on 1st March 2027.</p>
+        <span class="phase-date">📅 February 2027</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STEPS -->
+<section class="steps-section">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-eyebrow">Step-by-Step Guide</span>
+      <h2>How to Fill the Online Census Form</h2>
+    </div>
+
+    <div class="steps-list">
+
+      <div class="step reveal">
+        <div class="step-bubble">1</div>
+        <div class="step-body">
+          <h3>Visit the Official Self-Enumeration Portal</h3>
+          <p>Open your browser and go to <strong>se.census.gov.in</strong> — the official Government of India census self-enumeration portal. Ensure you are using the official URL and not a third-party site.</p>
+          <div class="step-tip">Use Chrome or Firefox for best compatibility. The portal works on mobile and desktop.</div>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-bubble">2</div>
+        <div class="step-body">
+          <h3>Select Your Preferred Language</h3>
+          <p>The portal is available in 16 Indian languages. On the home page, select your preferred language from the dropdown. Options include Hindi, English, Tamil, Telugu, Bengali, Kannada, Marathi, Odia, Malayalam, and more.</p>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-bubble">3</div>
+        <div class="step-body">
+          <h3>Register Using Your Mobile Number</h3>
+          <p>The <strong>head of the household</strong> must register. Enter your 10-digit mobile number on the login page. You will receive a One-Time Password (OTP) via SMS. Enter the OTP to verify your account.</p>
+          <div class="step-tip">Keep your phone handy — the OTP expires in a few minutes. No Aadhaar or ID document is required to register.</div>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-bubble">4</div>
+        <div class="step-body">
+          <h3>Enter Your Address & Location Details</h3>
+          <p>Provide your complete address — state, district, tehsil/block, village/ward, and house number. Make sure these match your physical address as enumerators will verify this during the house visit.</p>
+          <div class="step-tip">Double-check your house number carefully. Errors here can cause verification issues when the enumerator arrives.</div>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-bubble">5</div>
+        <div class="step-body">
+          <h3>Fill Housing & Amenities Details</h3>
+          <p>Answer questions about your dwelling — its condition (good / liveable / dilapidated), construction material used for <strong>floors, walls, and roof</strong> (e.g., pucca/kachcha), number of rooms, and ownership type (owned/rented).</p>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-bubble">6</div>
+        <div class="step-body">
+          <h3>Provide Amenities & Asset Information</h3>
+          <p>Fill in details about access to: drinking water source, toilet type, cooking fuel, lighting source, drainage, bathing facility, and household assets such as TV, radio, mobile phone, internet, laptop, bicycle, motorbike, car, and more.</p>
+          <div class="step-tip">All answers are self-reported and based on your actual household situation — be honest and accurate.</div>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-bubble">7</div>
+        <div class="step-body">
+          <h3>Enter Household Member Details</h3>
+          <p>Provide the number of members living in the household. In Phase I (HLO), you do not need to fill individual member details — that comes in Phase II (Population Enumeration) in February 2027.</p>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-bubble">8</div>
+        <div class="step-body">
+          <h3>Review & Submit the Form</h3>
+          <p>Carefully review all the information you have filled in. Once you are satisfied that all details are correct, click the <strong>Submit</strong> button. You can preview each section before final submission.</p>
+          <div class="step-tip">You cannot edit the form after final submission, so review everything carefully before clicking Submit.</div>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-bubble">9</div>
+        <div class="step-body">
+          <h3>Receive & Save Your SE ID</h3>
+          <p>After successful submission, you will receive a unique <strong>Self-Enumeration ID (SE ID)</strong>. Note this down or take a screenshot. This ID will be sent to your registered mobile number as well.</p>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-bubble">10</div>
+        <div class="step-body">
+          <h3>Share SE ID with the Enumerator</h3>
+          <p>When the government enumerator visits your home during the 30-day house listing period, share your SE ID with them. They will verify your self-submitted data and mark your household as complete in their mobile app.</p>
+          <div class="step-tip">The enumerator may still ask a few additional questions. Cooperate and provide accurate information.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- INFO BOXES -->
+<section style="background: var(--white); padding: 60px 0;">
+  <div class="container">
+    <div class="info-grid">
+      <div class="info-box reveal">
+        <h3>📋 What You Need</h3>
+        <ul>
+          <li>Active mobile phone number</li>
+          <li>Your home address (house no., village/ward)</li>
+          <li>Details about your home's construction</li>
+          <li>Knowledge of household amenities</li>
+          <li>List of household assets</li>
+          <li>Number of household members</li>
+        </ul>
+      </div>
+      <div class="info-box reveal">
+        <h3>✅ Key Points to Remember</h3>
+        <ul>
+          <li>No Aadhaar or ID card required</li>
+          <li>Portal available in 16 languages</li>
+          <li>Process takes about 10–15 minutes</li>
+          <li>Head of household must register</li>
+          <li>SE window is 15 days before house listing</li>
+          <li>SE ID is proof of successful submission</li>
+        </ul>
+      </div>
+      <div class="info-box reveal">
+        <h3>📅 State-wise SE Schedule (Phase I)</h3>
+        <ul>
+          <li>From April 1: Goa, Sikkim, Mizoram, Odisha, Karnataka, A&N Islands, NDMC, Delhi Cantonment</li>
+          <li>From April 16: Andhra Pradesh, Haryana (approx.)</li>
+          <li>From May 1: Maharashtra, Rajasthan, Jharkhand, Delhi (MCD areas) and many more states</li>
+        </ul>
+      </div>
+      <div class="info-box reveal">
+        <h3>❓ Frequently Asked Questions</h3>
+        <ul>
+          <li>Can I fill it on mobile? Yes — portal is mobile-friendly</li>
+          <li>What if I miss the SE window? An enumerator will visit your home</li>
+          <li>Is my data secure? Yes — government data security measures apply</li>
+          <li>Can I edit after submitting? No — review carefully before submitting</li>
+          <li>What language can I use? Any of the 16 available Indian languages</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section">
+  <h2>Be Counted. Shape India's Future.</h2>
+  <p>Every answer you fill contributes to better schools, hospitals, welfare schemes, and representation for your community.</p>
+  <div class="cta-buttons">
+    <a href="https://se.census.gov.in/" target="_blank" rel="noopener" class="btn-primary">
+      🖥️ Start Self-Enumeration
+    </a>
+    <a href="https://censusindia.gov.in/census.website/en" target="_blank" rel="noopener" class="btn-secondary">
+      📄 Official Census Website
+    </a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>This guide is for informational purposes only. For official information, visit
+    <a href="https://censusindia.gov.in" target="_blank">censusindia.gov.in</a> |
+    Self-Enumeration Portal: <a href="https://se.census.gov.in" target="_blank">se.census.gov.in</a>
+  </p>
+  <p style="margin-top:8px;">Office of the Registrar General & Census Commissioner, India · Census 2027</p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
